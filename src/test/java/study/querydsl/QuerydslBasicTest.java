@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.dto.MemberDto;
+import study.querydsl.dto.QMemberDto;
 import study.querydsl.dto.UserDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
@@ -443,6 +444,14 @@ public class QuerydslBasicTest {
                 .select(Projections.constructor(UserDto.class,
                         member.username,
                         member.age))
+                .from(member)
+                .fetch();
+        result.forEach(System.out::println);
+    }
+    @Test
+    void findDtoByQueryProjection(){
+        List<MemberDto> result = queryFactory
+                .select(new QMemberDto(member.username, member.age))
                 .from(member)
                 .fetch();
         result.forEach(System.out::println);
